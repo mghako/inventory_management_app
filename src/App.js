@@ -4,21 +4,65 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import AuthStackNavigator from './navigators/AuthStackNavigator'
 import { lightTheme } from './themes/light';
 import { AuthContext } from './contexts/AuthContext'
+import axios from 'axios';
+import { API_BASE_URL } from './config';
+import { sleep } from './utils/sleep';
+import { createAction } from './config/createAction';
 
 const RootStack = createNativeStackNavigator();
 
 const App = () => {
-  const auth = React.useMemo( ()=> ({
-    login: async () => {
-      console.log("login")
+
+  const [state, dispatch] = React.useReducer((state, action)=> {
+    switch(action.type) {
+      case 'SET_USER':
+        return {
+          ...state,
+          user: {...action.payload}
+        }
+      default:
+        return state
+
+    }
+  }, {
+    user: undefined
+  })
+
+  const auth = React.useMemo( () => ({
+    login: async (email, password) => {
+      const response = await axios.post(`${API_BASE_URL}/v1/auth/sanctum/token`, {
+        email,
+        password,
+        "device_name": "mobile_app"
+      })
+      console.log(response)
+      const user = {
+        email: response.data.data.email,
+        token: response.data.data.token,
+        device_name: response.data.data.device_name
+      }
+      dispatch(createAction('SET_USER', user))
     },
     logout: async () => {
       console.log("logout")
     },
-    register: async () => {
-      console.log("register")
+    register: async (name, email, password) => {
+      await sleep(1800)
+      await axios.post(`${API_BASE_URL}/v1/auth/register`, {
+        name,
+        email,
+        password
+      }, {
+        headers: {
+          'Accept' : 'application/json',
+          'Content-Type': 'application/json'
+        }
+      })
     }
   }), [])
+
+  console.log(state.user)
+
   return (
     <AuthContext.Provider value={auth}>
       <NavigationContainer theme={lightTheme}>

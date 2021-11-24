@@ -8,8 +8,8 @@ const AuthContainer = ({children}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
-    paddingTop: 120,
+    padding: 14,
+    paddingTop: 100,
     alignItems: 'center',
   },
 });

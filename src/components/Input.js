@@ -3,7 +3,7 @@ import {StyleSheet, TextInput} from 'react-native'
 
 const Input = ({style, ...props}) => {
     return (
-        <TextInput {...props} style={[style, styles.input ]} />
+        <TextInput {...props} style={[styles.input, style]} />
     )
 }
 
@@ -12,7 +12,8 @@ const styles = StyleSheet.create({
         width: '100%',
         backgroundColor: '#e8e8e8',
         padding: 16,
-        borderRadius: 10
+        borderRadius: 10,
+        color: '#000'
     }
 })
 
