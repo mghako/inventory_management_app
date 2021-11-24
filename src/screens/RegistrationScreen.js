@@ -11,7 +11,7 @@ import Loading from '../components/Loading'
 
 const RegistrationScreen = ({navigation}) => { 
 
-  const {register} = React.useContext(AuthContext)
+  const {auth: {register}} = React.useContext(AuthContext)
   const [name, setName] = React.useState('')
   const [email, setEmail] = React.useState('')
   const [password, setPassword] = React.useState('')

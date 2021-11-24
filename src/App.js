@@ -2,6 +2,7 @@ import React from 'react'
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import AuthStackNavigator from './navigators/AuthStackNavigator'
+import MainStackNavigator from './navigators/MainStackNavigator'
 import { lightTheme } from './themes/light';
 import { AuthContext } from './contexts/AuthContext'
 import axios from 'axios';
@@ -20,6 +21,11 @@ const App = () => {
           ...state,
           user: {...action.payload}
         }
+      case 'REMOVE_USER':
+        return {
+          ...state,
+          user: undefined
+        }
       default:
         return state
 
@@ -35,7 +41,7 @@ const App = () => {
         password,
         "device_name": "mobile_app"
       })
-      console.log(response)
+      
       const user = {
         email: response.data.data.email,
         token: response.data.data.token,
@@ -45,6 +51,7 @@ const App = () => {
     },
     logout: async () => {
       console.log("logout")
+      dispatch(createAction('REMOVE_USER'))
     },
     register: async (name, email, password) => {
       await sleep(1800)
@@ -64,15 +71,23 @@ const App = () => {
   console.log(state.user)
 
   return (
-    <AuthContext.Provider value={auth}>
+    <AuthContext.Provider value={{auth, user: state.user}}>
       <NavigationContainer theme={lightTheme}>
         <RootStack.Navigator
           screenOptions={{
-            headerShown: false,
+            headerShown: false
           }}
         >
-          <RootStack.Screen name={"AuthStack"} component={AuthStackNavigator} />
-
+          {
+            state.user ? (
+              <RootStack.Screen name={"MainStack"} component={MainStackNavigator} />
+            ) : 
+            (
+              <RootStack.Screen name={"AuthStack"} component={AuthStackNavigator} />
+            )
+          }
+          
+          
         </RootStack.Navigator>
       </NavigationContainer>
     </AuthContext.Provider>

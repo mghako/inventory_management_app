@@ -11,9 +11,9 @@ import Loading from '../components/Loading'
 
 const LoginScreen = ({navigation}) => {
 
-  const {login} =  React.useContext(AuthContext)
-  const [email, setEmail] = React.useState('')
-  const [password, setPassword] = React.useState('')
+  const {auth: {login}} =  React.useContext(AuthContext)
+  const [email, setEmail] = React.useState('saimon@gmail.com')
+  const [password, setPassword] = React.useState('password')
   const device_name = "mobile_app"
   const [loading, setLoading] = React.useState(false)
   const [error, setError] = React.useState('')
