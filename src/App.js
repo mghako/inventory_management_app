@@ -7,12 +7,34 @@ import { lightTheme } from './themes/light';
 import { AuthContext } from './contexts/AuthContext'
 import { UserContext } from './contexts/UserContext';
 import { useAuth } from './hooks/useAuth';
+import SplashScreen from './screens/SplashScreen';
 
 const RootStack = createNativeStackNavigator();
 
 const App = () => {
 
   const {auth, state} = useAuth()
+
+  function renderScreens() {
+    if(state.loading) {
+      return <RootStack.Screen name={"Splash"} component={SplashScreen} />
+    }
+    return state.user ? (
+              
+      <RootStack.Screen name={"MainStack"}>
+    { 
+      () => (
+        <UserContext.Provider value={state.user}>
+          <MainStackNavigator />
+        </UserContext.Provider>
+      )
+    }
+      </RootStack.Screen>
+  ) : 
+  (
+    <RootStack.Screen name={"AuthStack"} component={AuthStackNavigator} />
+  )
+  }
 
   return (
     <AuthContext.Provider value={auth}>
@@ -23,21 +45,7 @@ const App = () => {
           }}
         >
           {
-            state.user ? (
-              
-                <RootStack.Screen name={"MainStack"}>
-              { 
-                () => (
-                  <UserContext.Provider value={state.user}>
-                    <MainStackNavigator />
-                  </UserContext.Provider>
-                )
-              }
-                </RootStack.Screen>
-            ) : 
-            (
-              <RootStack.Screen name={"AuthStack"} component={AuthStackNavigator} />
-            )
+            renderScreens()
           }
           
           

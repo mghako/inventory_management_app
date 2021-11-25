@@ -18,7 +18,8 @@
     "react-native-dotenv": "^3.3.0",
     "react-native-ionicons": "^4.x",
     "react-native-safe-area-context": "^3.3.2",
-    "react-native-screens": "^3.9.0"
+    "react-native-screens": "^3.9.0",
+    "react-native-secure-storage": "^0.1.2"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

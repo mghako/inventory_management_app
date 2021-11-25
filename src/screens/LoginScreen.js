@@ -28,7 +28,6 @@ const LoginScreen = ({navigation}) => {
         try {
           setLoading(true)
           await login(email, password, device_name)
-          setLoading(false)
         } catch (error) {
           setError(error.message)
           setLoading(false)

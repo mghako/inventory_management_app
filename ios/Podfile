@@ -12,6 +12,8 @@ target 'InventoryManagementApp' do
     :hermes_enabled => false
   )
 
+  pod 'RNSecureStorage', :path => '../node_modules/react-native-secure-storage'
+
   target 'InventoryManagementAppTests' do
     inherit! :complete
     # Pods for testing
